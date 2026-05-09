@@ -2,14 +2,14 @@
 
 import * as React from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import Box, { type BoxProps } from "@mui/material/Box";
 
-const MotionBox = motion(Box);
-
-type RevealProps = BoxProps & {
+type RevealProps = {
   delay?: number;
   y?: number;
   once?: boolean;
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
 };
 
 export default function Reveal({
@@ -17,7 +17,8 @@ export default function Reveal({
   y = 24,
   once = true,
   children,
-  ...rest
+  className,
+  style,
 }: RevealProps) {
   const reduce = useReducedMotion();
 
@@ -27,7 +28,9 @@ export default function Reveal({
   };
 
   return (
-    <MotionBox
+    <motion.div
+      className={className}
+      style={style}
       initial="hidden"
       whileInView="visible"
       viewport={{ once, amount: 0.2 }}
@@ -37,9 +40,8 @@ export default function Reveal({
         delay,
         ease: [0.2, 0.8, 0.2, 1],
       }}
-      {...rest}
     >
       {children}
-    </MotionBox>
+    </motion.div>
   );
 }

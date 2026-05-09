@@ -20,6 +20,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import { colors, goldGradient, goldText } from "@/theme/theme";
 import Reveal from "@/components/common/Reveal";
 
+// Cast to bypass framer-motion v11 / MUI Box onAnimationStart type conflict.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const MotionBox = motion(Box as any) as any;
+
 type Feature = {
   id: string;
   title: string;
@@ -58,8 +62,6 @@ const FEATURES: Feature[] = [
     targetId: "faq",
   },
 ];
-
-const MotionBox = motion(Box);
 
 export default function HeroSection() {
   const reduce = useReducedMotion();

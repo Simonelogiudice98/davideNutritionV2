@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { type SxProps, type Theme } from "@mui/material/styles";
 import SendIcon from "@mui/icons-material/Send";
-import { colors, goldGradient, goldText } from "@/theme/theme";
+import { colors, goldText } from "@/theme/theme";
 import SectionHeading from "@/components/common/SectionHeading";
 import Reveal from "@/components/common/Reveal";
 

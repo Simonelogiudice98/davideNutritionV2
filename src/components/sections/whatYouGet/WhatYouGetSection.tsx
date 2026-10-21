@@ -92,8 +92,8 @@ const WhatYouGetSection: React.FC = () => {
         />
 
         <Grid container spacing={{ xs: 3, md: 4 }} alignItems="stretch">
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Reveal>
+          <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex" }}>
+            <Reveal style={{ width: "100%", height: "100%" }}>
               <Card variant="luxe" sx={{ height: "100%" }}>
                 <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
                   <Typography
@@ -187,11 +187,17 @@ const WhatYouGetSection: React.FC = () => {
             </Reveal>
           </Grid>
 
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Grid container spacing={2.5}>
+          <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex" }}>
+            <Box sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "minmax(0, 1fr)", sm: "repeat(2, minmax(0, 1fr))" },
+              gridAutoRows: "1fr",
+              gap: 2.5,
+              width: "100%",
+            }}>
               {BENEFITS.map(({ title, text, Icon }, idx) => (
-                <Grid size={{ xs: 12, sm: 6 }} key={title}>
-                  <Reveal delay={0.05 + idx * 0.08}>
+                <Box key={title} sx={{ minWidth: 0, display: "flex" }}>
+                  <Reveal delay={0.05 + idx * 0.08} style={{ width: "100%", height: "100%" }}>
                     <Card
                       variant="darkBorder"
                       sx={{
@@ -246,9 +252,9 @@ const WhatYouGetSection: React.FC = () => {
                       </CardContent>
                     </Card>
                   </Reveal>
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
           </Grid>
         </Grid>
       </Container>

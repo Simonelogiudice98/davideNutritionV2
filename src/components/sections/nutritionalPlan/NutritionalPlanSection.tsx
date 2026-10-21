@@ -184,6 +184,7 @@ function PlanCard({ plan }: { plan: Plan }) {
             </Typography>
             <Typography
               variant="h4"
+              component="h3"
               sx={{
                 fontFamily: "var(--font-playfair), serif",
                 fontWeight: 700,
@@ -226,9 +227,10 @@ function PlanCard({ plan }: { plan: Plan }) {
 
         <Divider sx={{ my: 3, borderColor: alpha(colors.goldMain, 0.15) }} />
 
-        <Stack spacing={1.4} sx={{ flex: 1 }}>
+        <Stack component="ul" spacing={1.4} sx={{ flex: 1, m: 0, p: 0, listStyle: "none" }}>
           {plan.features.map((f) => (
             <Stack
+              component="li"
               key={f}
               direction="row"
               spacing={1.4}
@@ -289,12 +291,8 @@ function PlanCard({ plan }: { plan: Plan }) {
             variant={plan.featured ? "contained" : "outlined"}
             color="primary"
             fullWidth
-            onClick={() =>
-              document.getElementById("seminar")?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              })
-            }
+            href="#seminar"
+            aria-label={`Get this plan: ${plan.title}`}
           >
             Get this plan
           </Button>

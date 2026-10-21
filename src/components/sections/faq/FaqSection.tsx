@@ -132,6 +132,7 @@ const FaqSection: React.FC = () => {
                     id={`faq-header-${i}`}
                   >
                     <Typography
+                      component="span"
                       sx={{
                         fontFamily: "var(--font-playfair), serif",
                         fontWeight: 600,
@@ -144,8 +145,9 @@ const FaqSection: React.FC = () => {
                     </Typography>
                   </AccordionSummary>
 
-                  <AccordionDetails id={`faq-content-${i}`}>
+                  <AccordionDetails>
                     <Typography
+                      component="span"
                       sx={{
                         color: "text.secondary",
                         lineHeight: 1.8,

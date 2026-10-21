@@ -66,11 +66,6 @@ const FEATURES: Feature[] = [
 export default function HeroSection() {
   const reduce = useReducedMotion();
 
-  const goTo = (id: string) =>
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-
   return (
     <Box
       component="section"
@@ -158,7 +153,7 @@ export default function HeroSection() {
                     variant="contained"
                     color="primary"
                     size="large"
-                    onClick={() => goTo("plans")}
+                    href="#plans"
                     sx={{ px: 3.5, py: 1.4 }}
                   >
                     Explore plans
@@ -167,7 +162,7 @@ export default function HeroSection() {
                     variant="outlined"
                     color="primary"
                     size="large"
-                    onClick={() => goTo("meet-expert")}
+                    href="#meet-expert"
                     sx={{ px: 3.5, py: 1.4 }}
                   >
                     Meet Davide
@@ -187,7 +182,7 @@ export default function HeroSection() {
                 }
                 transition={{
                   duration: 6,
-                  repeat: Infinity,
+                  repeat: 0,
                   ease: "easeInOut",
                 }}
                 sx={{
@@ -280,10 +275,12 @@ export default function HeroSection() {
               <Grid key={id} size={{ xs: 12, sm: 6, md: 3 }}>
                 <Reveal delay={0.1 + idx * 0.08}>
                   <Box
-                    component="button"
-                    onClick={() => goTo(targetId)}
+                    component="a"
+                    href={`#${targetId}`}
                     aria-label={`Go to ${title}`}
                     sx={{
+                      display: "block",
+                      textDecoration: "none",
                       width: "100%",
                       height: "100%",
                       cursor: "pointer",
@@ -365,8 +362,9 @@ export default function HeroSection() {
         <Box sx={{ display: "flex", justifyContent: "center", mt: { xs: 5, md: 7 } }}>
           <MotionBox
             animate={reduce ? undefined : { y: [0, 8, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            onClick={() => goTo("what-you-get")}
+            transition={{ duration: 1.8, repeat: 0, ease: "easeInOut" }}
+            component="a"
+            href="#what-you-get"
             sx={{
               cursor: "pointer",
               width: 44,

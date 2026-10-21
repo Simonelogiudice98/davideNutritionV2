@@ -36,13 +36,6 @@ const MeetOurExpertsSection: React.FC<MeetOurExpertsProps> = ({
   ctaPrimaryText = "Book a consultation",
   onPrimary,
 }) => {
-  const handlePrimary = () => {
-    if (onPrimary) return onPrimary();
-    document
-      .getElementById("seminar")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
   return (
     <Box component="section" sx={{ py: { xs: 7, md: 12 } }}>
       <Container maxWidth={false} sx={{ width: "min(1200px, 96%)", mx: "auto" }}>
@@ -139,7 +132,8 @@ const MeetOurExpertsSection: React.FC<MeetOurExpertsProps> = ({
                         variant="contained"
                         color="primary"
                         size="large"
-                        onClick={handlePrimary}
+                        href={onPrimary ? undefined : "#seminar"}
+                        onClick={onPrimary}
                         sx={{ px: 4, py: 1.4 }}
                       >
                         {ctaPrimaryText}

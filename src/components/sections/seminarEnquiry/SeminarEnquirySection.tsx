@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import {
   Box,
+  Alert,
   Button,
   Card,
   CardContent,
@@ -56,6 +57,19 @@ export default function SeminarEnquirySection({
   const [touched, setTouched] = React.useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = React.useState(false);
   const [sent, setSent] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState("");
+  const formRef = React.useRef<HTMLFormElement>(null);
+  const successRef = React.useRef<HTMLDivElement>(null);
+  const errorRef = React.useRef<HTMLDivElement>(null);
+  const firstNameRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (sent) successRef.current?.focus();
+  }, [sent]);
+
+  React.useEffect(() => {
+    if (submitError) errorRef.current?.focus();
+  }, [submitError]);
 
   const setField =
     (k: keyof SeminarEnquiryValues) =>
@@ -88,14 +102,26 @@ export default function SeminarEnquirySection({
       phone: true,
       message: true,
     });
-    if (hasErrors) return;
+    if (hasErrors) {
+      const firstError = Object.keys(errors)[0];
+      formRef.current?.querySelector<HTMLElement>(`[name="${firstError}"]`)?.focus();
+      return;
+    }
+
+    setSubmitError("");
 
     try {
       setSubmitting(true);
-      await onSubmit?.(values);
+      if (!onSubmit) {
+        setSubmitError("The contact form is currently unavailable. Please contact me using the email or WhatsApp links on this page.");
+        return;
+      }
+      await onSubmit(values);
       setSent(true);
       setValues({ firstName: "", lastName: "", email: "", phone: "", message: "" });
       setTouched({});
+    } catch {
+      setSubmitError("Your message could not be sent. Please try again or use the email or WhatsApp links on this page.");
     } finally {
       setSubmitting(false);
     }
@@ -182,6 +208,9 @@ export default function SeminarEnquirySection({
                 <Grid size={{ xs: 12, md: 6 }}>
                   {sent ? (
                     <Stack
+                      ref={successRef}
+                      tabIndex={-1}
+                      role="status"
                       spacing={2}
                       alignItems="center"
                       justifyContent="center"
@@ -206,17 +235,34 @@ export default function SeminarEnquirySection({
                       <Button
                         variant="outlined"
                         color="primary"
-                        onClick={() => setSent(false)}
+                        onClick={() => {
+                          setSent(false);
+                          requestAnimationFrame(() => firstNameRef.current?.focus());
+                        }}
                         sx={{ mt: 2 }}
                       >
                         Send another message
                       </Button>
                     </Stack>
                   ) : (
-                    <Box component="form" onSubmit={handleSubmit}>
+                    <Box component="form" ref={formRef} noValidate onSubmit={handleSubmit} aria-label="Contact enquiry" aria-busy={submitting}>
+                      {submitError && (
+                        <Alert severity="error" ref={errorRef} tabIndex={-1} sx={{ mb: 2 }}>
+                          {submitError}
+                        </Alert>
+                      )}
+                      <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
+                        All fields are required.
+                      </Typography>
                       <Grid container spacing={2}>
                         <Grid size={{ xs: 12, sm: 6 }}>
                           <TextField
+                            id="contact-first-name"
+                            name="firstName"
+                            label="First name"
+                            autoComplete="given-name"
+                            required
+                            inputRef={firstNameRef}
                             value={values.firstName}
                             onChange={setField("firstName")}
                             onBlur={markTouched("firstName")}
@@ -225,12 +271,17 @@ export default function SeminarEnquirySection({
                             variant="filled"
                             error={!!(touched.firstName && errors.firstName)}
                             helperText={touched.firstName ? errors.firstName : " "}
-                            slotProps={{ input: { disableUnderline: true } }}
+                            slotProps={{ input: { disableUnderline: true }, formHelperText: { "aria-live": "polite" } }}
                             sx={fieldSx()}
                           />
                         </Grid>
                         <Grid size={{ xs: 12, sm: 6 }}>
                           <TextField
+                            id="contact-last-name"
+                            name="lastName"
+                            label="Last name"
+                            autoComplete="family-name"
+                            required
                             value={values.lastName}
                             onChange={setField("lastName")}
                             onBlur={markTouched("lastName")}
@@ -239,12 +290,18 @@ export default function SeminarEnquirySection({
                             variant="filled"
                             error={!!(touched.lastName && errors.lastName)}
                             helperText={touched.lastName ? errors.lastName : " "}
-                            slotProps={{ input: { disableUnderline: true } }}
+                            slotProps={{ input: { disableUnderline: true }, formHelperText: { "aria-live": "polite" } }}
                             sx={fieldSx()}
                           />
                         </Grid>
                         <Grid size={{ xs: 12 }}>
                           <TextField
+                            id="contact-email"
+                            name="email"
+                            label="Email address"
+                            type="email"
+                            autoComplete="email"
+                            required
                             value={values.email}
                             onChange={setField("email")}
                             onBlur={markTouched("email")}
@@ -253,12 +310,18 @@ export default function SeminarEnquirySection({
                             variant="filled"
                             error={!!(touched.email && errors.email)}
                             helperText={touched.email ? errors.email : " "}
-                            slotProps={{ input: { disableUnderline: true } }}
+                            slotProps={{ input: { disableUnderline: true }, formHelperText: { "aria-live": "polite" } }}
                             sx={fieldSx()}
                           />
                         </Grid>
                         <Grid size={{ xs: 12 }}>
                           <TextField
+                            id="contact-phone"
+                            name="phone"
+                            label="Phone number (with country code)"
+                            type="tel"
+                            autoComplete="tel"
+                            required
                             value={values.phone}
                             onChange={setField("phone")}
                             onBlur={markTouched("phone")}
@@ -267,12 +330,16 @@ export default function SeminarEnquirySection({
                             variant="filled"
                             error={!!(touched.phone && errors.phone)}
                             helperText={touched.phone ? errors.phone : " "}
-                            slotProps={{ input: { disableUnderline: true } }}
+                            slotProps={{ input: { disableUnderline: true }, formHelperText: { "aria-live": "polite" } }}
                             sx={fieldSx()}
                           />
                         </Grid>
                         <Grid size={{ xs: 12 }}>
                           <TextField
+                            id="contact-message"
+                            name="message"
+                            label="Message"
+                            required
                             value={values.message}
                             onChange={setField("message")}
                             onBlur={markTouched("message")}
@@ -283,7 +350,7 @@ export default function SeminarEnquirySection({
                             minRows={4}
                             error={!!(touched.message && errors.message)}
                             helperText={touched.message ? errors.message : " "}
-                            slotProps={{ input: { disableUnderline: true } }}
+                            slotProps={{ input: { disableUnderline: true }, formHelperText: { "aria-live": "polite" } }}
                             sx={fieldSx()}
                           />
                         </Grid>

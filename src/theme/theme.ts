@@ -108,6 +108,25 @@ export const theme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
+        html: {
+          scrollBehavior: "smooth",
+          scrollPaddingTop: "96px",
+          "@media (prefers-reduced-motion: reduce)": { scrollBehavior: "auto" },
+        },
+        ":is(a, button, input, textarea, [tabindex]):focus-visible": {
+          outline: `2px solid ${goldLight}`,
+          outlineOffset: "4px",
+        },
+        "@media (prefers-reduced-motion: reduce)": {
+          "*, *::before, *::after": {
+            animation: "none !important",
+            transition: "none !important",
+            scrollBehavior: "auto !important",
+          },
+        },
+        "@media (forced-colors: active)": {
+          "*": { WebkitTextFillColor: "currentColor !important" },
+        },
         "html, body": {
           backgroundColor: bgBase,
           color: textPrimary,

@@ -13,26 +13,34 @@ import FloatingContacts from "@/components/floatingContacts/FloatingContacts";
 export default function HomePage() {
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <Box component="a" href="#top" sx={{
+        position: "fixed", top: 8, left: 8, zIndex: 1500,
+        transform: "translateY(-200%)", bgcolor: "background.paper",
+        color: "primary.light", p: 2, borderRadius: 1,
+        "&:focus": { transform: "none" },
+      }}>
+        Skip to main content
+      </Box>
       <Header />
 
-      <Box component="main" id="top" sx={{ flex: 1 }}>
+      <Box component="main" id="top" tabIndex={-1} sx={{ flex: 1, scrollMarginTop: 96 }}>
         <HeroSection />
-        <Box id="what-you-get" sx={{ scrollMarginTop: 96 }}>
+        <Box id="what-you-get" tabIndex={-1} sx={{ scrollMarginTop: 96 }}>
           <WhatYouGetSection />
         </Box>
-        <Box id="meet-expert" sx={{ scrollMarginTop: 96 }}>
+        <Box id="meet-expert" tabIndex={-1} sx={{ scrollMarginTop: 96 }}>
           <MeetOurExpertsSection />
         </Box>
-        <Box id="plans" sx={{ scrollMarginTop: 96 }}>
+        <Box id="plans" tabIndex={-1} sx={{ scrollMarginTop: 96 }}>
           <NutritionalPlanSection />
         </Box>
-        <Box id="testimonials" sx={{ scrollMarginTop: 96 }}>
+        <Box id="testimonials" tabIndex={-1} sx={{ scrollMarginTop: 96 }}>
           <TestimonialSection />
         </Box>
-        <Box id="faq" sx={{ scrollMarginTop: 96 }}>
+        <Box id="faq" tabIndex={-1} sx={{ scrollMarginTop: 96 }}>
           <FaqSection />
         </Box>
-        <Box id="seminar" sx={{ scrollMarginTop: 96 }}>
+        <Box id="seminar" tabIndex={-1} sx={{ scrollMarginTop: 96 }}>
           <SeminarEnquirySection />
         </Box>
       </Box>

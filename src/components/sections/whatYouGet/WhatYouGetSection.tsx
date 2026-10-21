@@ -103,11 +103,12 @@ const WhatYouGetSection: React.FC = () => {
                     The journey
                   </Typography>
 
-                  <Stack spacing={2.5}>
+                  <Stack component="ol" spacing={2.5} sx={{ m: 0, p: 0, listStyle: "none" }}>
                     {STEPS.map((s, idx) => (
-                      <React.Fragment key={s.n}>
+                      <Box component="li" key={s.n}>
                         <Stack direction="row" spacing={2.5} alignItems="flex-start">
                           <Box
+                            aria-hidden="true"
                             sx={{
                               width: 44,
                               height: 44,
@@ -134,6 +135,7 @@ const WhatYouGetSection: React.FC = () => {
 
                           <Box sx={{ flex: 1, minWidth: 0, pt: 0.5 }}>
                             <Typography
+                              component="h3"
                               sx={{
                                 fontFamily: "var(--font-playfair), serif",
                                 fontWeight: 600,
@@ -156,7 +158,7 @@ const WhatYouGetSection: React.FC = () => {
                         {idx !== STEPS.length - 1 && (
                           <Divider sx={{ ml: 7.5, borderColor: alpha("#fff", 0.06) }} />
                         )}
-                      </React.Fragment>
+                      </Box>
                     ))}
                   </Stack>
 
@@ -171,12 +173,7 @@ const WhatYouGetSection: React.FC = () => {
                       variant="contained"
                       color="primary"
                       size="large"
-                      onClick={() =>
-                        document.getElementById("meet-expert")?.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        })
-                      }
+                      href="#seminar"
                     >
                       Book your first visit
                     </Button>
@@ -214,6 +211,7 @@ const WhatYouGetSection: React.FC = () => {
                       <CardContent sx={{ p: 3 }}>
                         <Stack spacing={1.75}>
                           <Box
+                            aria-hidden="true"
                             sx={{
                               width: 52,
                               height: 52,
@@ -228,6 +226,7 @@ const WhatYouGetSection: React.FC = () => {
                           </Box>
 
                           <Typography
+                            component="h3"
                             sx={{
                               fontFamily: "var(--font-playfair), serif",
                               fontWeight: 600,

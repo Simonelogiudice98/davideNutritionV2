@@ -47,10 +47,6 @@ const Footer: React.FC<Props> = ({
     "&:hover": { color: colors.goldLight },
   } as const;
 
-  const onTop = () =>
-    typeof window !== "undefined" &&
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
   return (
     <Box
       component="footer"
@@ -179,7 +175,7 @@ const Footer: React.FC<Props> = ({
               >
                 Explore
               </Typography>
-              <Stack spacing={1.25}>
+              <Stack component="nav" aria-label="Footer navigation" spacing={1.25}>
                 <MuiLink href="#what-you-get" sx={linkSx}>
                   What you get
                 </MuiLink>
@@ -221,7 +217,7 @@ const Footer: React.FC<Props> = ({
 
               {showBackToTop && (
                 <IconButton
-                  onClick={onTop}
+                  href="#top"
                   aria-label="Back to top"
                   size="small"
                   sx={{

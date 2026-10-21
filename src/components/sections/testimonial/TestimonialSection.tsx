@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import {
   Avatar,
+  Rating,
   Box,
   Card,
   CardContent,
@@ -14,7 +15,6 @@ import {
   Typography,
   alpha,
 } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import { colors, goldGradient } from "@/theme/theme";
 import SectionHeading from "@/components/common/SectionHeading";
@@ -63,17 +63,9 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
 function Stars({ value = 5 }: { value?: number }) {
   const v = Math.max(0, Math.min(5, value));
   return (
-    <Stack direction="row" spacing={0.3} aria-label={`Rating: ${v} out of 5`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <StarIcon
-          key={i}
-          sx={{
-            fontSize: 18,
-            color: i < v ? "primary.light" : alpha("#fff", 0.18),
-          }}
-        />
-      ))}
-    </Stack>
+    <Rating value={v} readOnly precision={0.5}
+      getLabelText={(rating) => `${rating} out of 5 stars`}
+      sx={{ color: "primary.light", fontSize: 18 }} />
   );
 }
 
@@ -256,7 +248,9 @@ export default function TestimonialSection({
                       </Stack>
 
                       <Typography
+                        component="blockquote"
                         sx={{
+                          m: 0,
                           color: "text.primary",
                           lineHeight: 1.8,
                           fontSize: 14.5,

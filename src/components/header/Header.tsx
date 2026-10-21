@@ -32,6 +32,12 @@ const NAV: NavItem[] = [
 const Header: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
+  const pendingTarget = React.useRef<string | null>(null);
+
+  const closeNavigation = (target: string) => {
+    pendingTarget.current = target;
+    setDrawerOpen(false);
+  };
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -39,13 +45,6 @@ const Header: React.FC = () => {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const goTo = (id: string) => {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    setDrawerOpen(false);
-  };
 
   return (
     <AppBar
@@ -78,15 +77,17 @@ const Header: React.FC = () => {
         }}
       >
         <Box
-          onClick={() => goTo("top")}
+          component="a"
+          href="#top"
           sx={{
             display: "flex",
             alignItems: "center",
             gap: 1.25,
             cursor: "pointer",
             userSelect: "none",
+            textDecoration: "none",
           }}
-          aria-label="Go to top"
+          aria-label="Davide Nutrition — back to top"
         >
           <Box
             sx={{
@@ -136,6 +137,8 @@ const Header: React.FC = () => {
         </Box>
 
         <Stack
+          component="nav"
+          aria-label="Main navigation"
           direction="row"
           spacing={3}
           alignItems="center"
@@ -144,9 +147,10 @@ const Header: React.FC = () => {
           {NAV.map((n) => (
             <Box
               key={n.targetId}
-              component="button"
-              onClick={() => goTo(n.targetId)}
+              component="a"
+              href={`#${n.targetId}`}
               sx={{
+                textDecoration: "none",
                 background: "none",
                 border: "none",
                 p: 0,
@@ -165,7 +169,7 @@ const Header: React.FC = () => {
                   left: 0,
                   right: 0,
                   bottom: -6,
-                  height: 1,
+                  height: "1px",
                   backgroundImage: goldGradient,
                   transform: "scaleX(0)",
                   transformOrigin: "center",
@@ -184,7 +188,7 @@ const Header: React.FC = () => {
             variant="contained"
             color="primary"
             size="small"
-            onClick={() => goTo("seminar")}
+            href="#seminar"
             sx={{
               display: { xs: "none", sm: "inline-flex" },
               fontSize: 12,
@@ -213,6 +217,8 @@ const Header: React.FC = () => {
               },
             }}
             aria-label={drawerOpen ? "Close menu" : "Open menu"}
+            aria-expanded={drawerOpen}
+            aria-controls={drawerOpen ? "mobile-navigation" : undefined}
           >
             <MenuIcon />
           </IconButton>
@@ -220,11 +226,17 @@ const Header: React.FC = () => {
 
         <Drawer
           anchor="right"
+          slotProps={{ transition: { onExited: () => {
+            if (pendingTarget.current) {
+              document.getElementById(pendingTarget.current)?.focus({ preventScroll: true });
+              pendingTarget.current = null;
+            }
+          } } }}
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
           PaperProps={{
             sx: {
-              width: 320,
+              width: "min(320px, 100vw)",
               bgcolor: colors.bgBase,
               borderLeft: "1px solid",
               borderColor: alpha(colors.goldMain, 0.18),
@@ -235,7 +247,7 @@ const Header: React.FC = () => {
             },
           }}
         >
-          <Box sx={{ p: 2.5 }}>
+          <Box component="nav" id="mobile-navigation" aria-label="Mobile navigation" sx={{ p: 2.5 }}>
             <Stack
               direction="row"
               alignItems="center"
@@ -268,7 +280,8 @@ const Header: React.FC = () => {
               {NAV.map((n) => (
                 <Button
                   key={n.targetId}
-                  onClick={() => goTo(n.targetId)}
+                  href={`#${n.targetId}`}
+                  onClick={() => closeNavigation(n.targetId)}
                   fullWidth
                   sx={{
                     justifyContent: "flex-start",
@@ -295,7 +308,8 @@ const Header: React.FC = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
-                onClick={() => goTo("seminar")}
+                href="#seminar"
+                onClick={() => closeNavigation("seminar")}
                 sx={{ mt: 2, py: 1.2 }}
               >
                 Book a call

@@ -61,26 +61,16 @@ const Footer: React.FC<Props> = ({
         position: "relative",
         backgroundColor: colors.bgBase,
         backgroundImage: `
-          radial-gradient(900px 320px at 15% 0%, ${alpha(
+          radial-gradient(900px 500px at 30% 20%, ${alpha(
             colors.goldMain,
-            0.08,
-          )}, transparent 55%),
+            0.12,
+          )}, transparent 60%),
           radial-gradient(700px 280px at 85% 10%, ${alpha(
             colors.goldDark,
-            0.06,
+            0.04,
           )}, transparent 55%)
         `,
-        borderTop: `1px solid ${alpha(colors.goldMain, 0.18)}`,
-        "&::before": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          background: goldGradient,
-          opacity: 0.5,
-        },
+        borderTop: `1px solid ${alpha(colors.goldMain, 0.12)}`,
       }}
     >
       <Container maxWidth={false} sx={{ width: "min(1200px, 96%)", mx: "auto" }}>

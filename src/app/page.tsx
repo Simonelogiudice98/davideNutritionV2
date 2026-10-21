@@ -39,11 +39,11 @@ export default function HomePage() {
 
       <Footer
         email="info@davide-nutrition.com"
-        whatsappUrl="https://wa.me/39XXXXXXXXXX?text=Hi%20Davide%2C%20I%27d%20like%20to%20book%20a%20consultation"
+        whatsappUrl="https://wa.me/447444660645?text=Hi%20Davide%2C%20I%27d%20like%20to%20book%20a%20consultation"
       />
 
       <FloatingContacts
-        whatsapp="+39333111222"
+        whatsapp="+447444660645"
         email="info@davide-nutrition.com"
         message="Hi Davide! I'd love to know more about your consultations."
       />

@@ -59,7 +59,7 @@ const iconWrapSx = {
 } as const;
 
 const FloatingContacts: React.FC<Props> = ({
-  whatsapp = "+390000000000",
+  whatsapp = "+447444660645",
   email = "info@example.com",
   message = "Hi! I'd like to know more about your consultations.",
 }) => {

@@ -24,6 +24,8 @@ const ringGoldStrong = `0 0 0 1px ${alpha(goldMain, 0.28)}, 0 0 22px ${alpha(gol
 export const goldGradient = `linear-gradient(135deg, ${goldDark} 0%, ${goldMain} 35%, ${goldShimmer} 55%, ${goldMain} 75%, ${goldDark} 100%)`;
 export const goldText = {
   background: goldGradient,
+  // Keep the gradient paint area clear of Playfair's ascenders and descenders.
+  paddingBlock: "0.12em",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   backgroundClip: "text",
@@ -68,19 +70,19 @@ export const theme = createTheme({
       fontFamily: "var(--font-playfair), Georgia, serif",
       fontWeight: 700,
       letterSpacing: -1.2,
-      lineHeight: 1.05,
+      lineHeight: 1.2,
     },
     h2: {
       fontFamily: "var(--font-playfair), Georgia, serif",
       fontWeight: 700,
       letterSpacing: -0.8,
-      lineHeight: 1.1,
+      lineHeight: 1.25,
     },
     h3: {
       fontFamily: "var(--font-playfair), Georgia, serif",
       fontWeight: 700,
       letterSpacing: -0.6,
-      lineHeight: 1.15,
+      lineHeight: 1.25,
     },
     h4: {
       fontFamily: "var(--font-playfair), Georgia, serif",

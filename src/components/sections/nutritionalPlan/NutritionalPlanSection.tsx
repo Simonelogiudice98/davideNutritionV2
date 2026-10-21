@@ -15,6 +15,7 @@ import {
   Button,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CheckIcon from "@mui/icons-material/Check";
 import SportsMmaIcon from "@mui/icons-material/SportsMma";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
@@ -30,7 +31,7 @@ type Plan = {
   description: string;
   price: string;
   priceHint: string;
-  suitableFor: string;
+  suitableFor: string | string[];
   features: string[];
   Icon: React.ElementType;
   featured?: boolean;
@@ -42,17 +43,20 @@ const PLANS: Plan[] = [
     label: "Body Recomp",
     title: "Weight Management",
     description: "Supports your weight loss & body recomposition journey.",
-    price: "€160",
-    priceHint: "Program package",
-    suitableFor:
-      "Beginners getting into fitness, gym-goers aiming for fat loss or recomp, busy people who want structure without extremes",
+    price: "£200",
+    priceHint: "8 weeks programme",
+    suitableFor: [
+      "Beginner starting their fitness journey",
+      "Gym goers aiming for fat loss or muscle gain",
+      "Busy professionals who want structure without extremes",
+    ],
     Icon: FitnessCenterIcon,
     features: [
-      "First consultation / assessment (45 min)",
-      "Nutritional plan delivered within 7 days",
-      "Grocery shopping list",
-      "Weekly WhatsApp correspondence",
-      "Two free follow-ups at 4 and 8 weeks (30 min each)",
+      "Initial consultation",
+      "Personalised nutritional plan delivered within 7 days",
+      "Practical grocery shopping list",
+      "Weekly WhatsApp or email support, with response within 48 hours",
+      "One follow-up consultation",
     ],
   },
   {
@@ -60,8 +64,8 @@ const PLANS: Plan[] = [
     label: "Fight Camp",
     title: "Combat Sport Athlete",
     description:
-      "Full fight-camp support: weight cut, weigh-in protocol and performance-focused nutrition.",
-    price: "€240",
+      "Full fight camp support: weigh-in and rehydration protocols and performance focused nutrition",
+    price: "£250",
     priceHint: "Covers up to 8 weeks",
     suitableFor: "MMA, Boxing, Kickboxing, Muay Thai, Grappling",
     Icon: SportsMmaIcon,
@@ -98,6 +102,9 @@ const PLANS: Plan[] = [
 ];
 
 function PlanCard({ plan }: { plan: Plan }) {
+  const isWeightManagement = plan.id === "weight";
+  const FeatureCheck = isWeightManagement ? CheckIcon : CheckCircleIcon;
+
   return (
     <Card
       variant={plan.featured ? "luxe" : "softBorder"}
@@ -105,6 +112,9 @@ function PlanCard({ plan }: { plan: Plan }) {
         height: "100%",
         position: "relative",
         overflow: "visible",
+        ...(isWeightManagement && {
+          border: `1px solid ${alpha(colors.goldMain, 0.22)}`,
+        }),
         transform: { md: plan.featured ? "translateY(-12px)" : "none" },
         "&:hover": {
           transform: {
@@ -186,7 +196,7 @@ function PlanCard({ plan }: { plan: Plan }) {
             </Typography>
             <Typography
               variant="body2"
-              sx={{ mt: 1, color: "text.secondary", maxWidth: 320, mx: "auto" }}
+              sx={{ mt: 1, color: plan.id === "combat" ? "#fff" : "text.secondary", maxWidth: 320, mx: "auto" }}
             >
               {plan.description}
             </Typography>
@@ -197,7 +207,7 @@ function PlanCard({ plan }: { plan: Plan }) {
               sx={{
                 fontFamily: "var(--font-playfair), serif",
                 fontSize: 52,
-                lineHeight: 1.0,
+                lineHeight: 1.2,
                 fontWeight: 700,
                 letterSpacing: -1.5,
                 ...goldText,
@@ -224,7 +234,7 @@ function PlanCard({ plan }: { plan: Plan }) {
               spacing={1.4}
               sx={{ alignItems: "flex-start", textAlign: "left" }}
             >
-              <CheckCircleIcon
+              <FeatureCheck
                 sx={{ mt: "2px", fontSize: 18, color: "primary.light", flexShrink: 0 }}
               />
               <Typography variant="body2" sx={{ color: "text.primary", fontSize: 13.5 }}>
@@ -235,6 +245,26 @@ function PlanCard({ plan }: { plan: Plan }) {
         </Stack>
 
         <Box sx={{ mt: 3 }}>
+          {Array.isArray(plan.suitableFor) ? (
+            <Box sx={{ mb: 2.5, textAlign: "left" }}>
+              <Typography
+                variant="caption"
+                sx={{ color: "primary.light", fontWeight: 700, display: "block", mb: 1.4 }}
+              >
+                Suitable for:
+              </Typography>
+              <Stack component="ul" spacing={1.4} sx={{ m: 0, p: 0, listStyle: "none" }}>
+                {plan.suitableFor.map((audience) => (
+                  <Stack component="li" key={audience} direction="row" spacing={1.4} alignItems="flex-start">
+                    <CheckIcon sx={{ mt: "2px", fontSize: 18, color: "#66BB6A", flexShrink: 0 }} />
+                    <Typography variant="body2" sx={{ color: "text.primary", fontSize: 13.5 }}>
+                      {audience}
+                    </Typography>
+                  </Stack>
+                ))}
+              </Stack>
+            </Box>
+          ) : (
           <Typography
             variant="caption"
             sx={{
@@ -253,6 +283,7 @@ function PlanCard({ plan }: { plan: Plan }) {
             </Box>{" "}
             {plan.suitableFor}
           </Typography>
+          )}
 
           <Button
             variant={plan.featured ? "contained" : "outlined"}
